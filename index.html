@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<link href='https://fonts.googleapis.com/css?family=Antonio' rel='stylesheet'>
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link href='https://fonts.googleapis.com/css?family=Dangrek' rel='stylesheet'>
+<link href='https://fonts.googleapis.com/css?family=Alegreya Sans' rel='stylesheet'>
+<style>
+	body {
+    	text-align: center;
+    	font-family: 'Antonio';
+        background-color: rgb(54, 75, 104);
+        color: rgb(255, 241, 179);
+        }
+        
+    m {
+    	font-size: 11pt;
+    	font-family: serif;
+        }
+        
+    button {
+    	padding: 7pt;
+    	background-color: rgb(255, 238, 153);
+        border-radius: 7pt;
+    }
+    
+    h2 {
+    	font-family: 'Dangrek';
+    }
+    h5 {
+    	font-family: 'Alegreya Sans';
+    }
+    
+    textarea {
+    	font-family: 'Alegreya Sans';
+        background-color: rgb(215, 223, 234);
+        border-radius: 7pt;
+    }
+    
+    input {
+    	background-color: rgb(215, 223, 234);
+        border-radius: 7pt;
+    }
+       
+</style>
+<body>
+
+<h2>Gerador de links para Whatsapp</h2>
+<h5>Feito por Flou Ainan</h5>
+<p>Insira seus dados e gere um link de mensagem personalizada para seu whatsapp.</p>
+<p>Este método funciona para a versão Business e Clássica.</p>
+<br><br>
+
+
+	<label for="numero">Número com DDD e código do país<br><m>Ex.: 5521978564402</m><br></label>
+  <input id="num" name="numero" size="45"><br>
+
+
+<br>
+Insira sua mensagem personalizada:<br>
+<textarea id="mensagem" rows="4" cols="50">
+Olá, estou interessado em seus serviços.
+</textarea><br>
+<button id="converter" onclick="gerarLink()" style="font-size: 16pt"> GERAR LINK </button><br><br>
+
+Link Personalizado:<br>
+<textarea readonly id="resultado" rows="4" cols="50"></textarea><br>
+<button id="copiar-link" onclick="copiarLink()" style="font-size: 16pt"> COPIAR LINK </button>
+<script>
+
+function copiarLink() {
+  var copyText = document.getElementById("resultado");
+
+  copyText.select();
+  copyText.setSelectionRange(0, 99999);
+
+  navigator.clipboard.writeText(copyText.innerHTML);
+  
+  alert("Link Copiado !");
+}
+
+function gerarLink() {
+var numero = document.getElementById("num").value;
+var link = "https://wa.me/";
+link = link+numero+"?text="+gerarTexto();
+document.getElementById("resultado").innerHTML = link;
+}
+
+function gerarTexto() {
+	var mensagem = document.getElementById("mensagem").innerHTML;
+    var resultado =  encodeURIComponent(mensagem);
+	return resultado;
+}
+
+var input2 = document.getElementById("num");
+input2.addEventListener("keyup", function(event) {
+  if (event.keyCode === 13) {
+   event.preventDefault();
+   document.getElementById("mensagem").focus();
+  }
+});
+
+var input = document.getElementById("mensagem");
+input.addEventListener("keyup", function(event) {
+  if (event.keyCode === 13) {
+   event.preventDefault();
+   document.getElementById("converter").click();
+  }
+});
+  
+
+
+</script>
+
+</body>
+</html>
+
