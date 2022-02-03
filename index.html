@@ -6,10 +6,14 @@
 <link href='https://fonts.googleapis.com/css?family=Alegreya Sans' rel='stylesheet'>
 <style>
 	body {
+        background-image: linear-gradient(rgb(54, 75, 104), rgb(65, 84, 120));
+        background-repeat: no-repeat;
+        font-size: 14pt;
     	text-align: center;
     	font-family: 'Antonio';
-        background-color: rgb(54, 75, 104);
+        background-color: rgb(65, 84, 120);
         color: rgb(255, 241, 179);
+        margin: 15pt;
         }
         
     m {
@@ -18,13 +22,16 @@
         }
         
     button {
-    	padding: 7pt;
+        font-size: 16pt;
+    	padding: 5pt 25pt;
     	background-color: rgb(255, 238, 153);
         border-radius: 7pt;
+        border-color: rgba(0,0,0,0);
     }
     
     h2 {
     	font-family: 'Dangrek';
+        color: white;
     }
     h5 {
     	font-family: 'Alegreya Sans';
@@ -34,18 +41,40 @@
     	font-family: 'Alegreya Sans';
         background-color: rgb(215, 223, 234);
         border-radius: 7pt;
+        border-color: rgba(0,0,0,0);
     }
     
     input {
     	background-color: rgb(215, 223, 234);
         border-radius: 7pt;
+        border-color: rgba(0,0,0,0);
     }
+    #resultado {
+        color: rgb(70,90,135);
+    }
+    #website {
+        background-color: rgb(128,160,200);
+        color: rgb(256,250,50);
+        border-color: rgba(0,0,0,0);
+    }
+    
+@media only screen 
+and (max-device-width: 700px) {
+        body {font-size: 3.5vw}
+        h2 {font-size: 4vw}
+        h5 {font-size: 2.8vw}
+        m {font-size: 2.8vw}
+        button {
+            font-size: 4vw;
+            padding:1% 10%;
+            border-radius: 1.8vw;
+        }
        
 </style>
 <body>
-
-<h2>Gerador de links para Whatsapp</h2>
-<h5>Feito por Flou Ainan</h5>
+<br>
+<h2>GERADOR DE LINKS PERSONALIZADOS PARA WHATSAPP 📲️</h2>
+<h5>Feito por Flou Ainan</h5><br>
 <p>Insira seus dados e gere um link de mensagem personalizada para seu whatsapp.</p>
 <p>Este método funciona para a versão Business e Clássica.</p>
 <br><br>
@@ -60,33 +89,70 @@ Insira sua mensagem personalizada:<br>
 <textarea id="mensagem" rows="4" cols="50">
 Olá, estou interessado em seus serviços.
 </textarea><br>
-<button id="converter" onclick="gerarLink()" style="font-size: 16pt"> GERAR LINK </button><br><br>
+<button id="converter" onclick="gerarLink()"> GERAR LINK </button><br><br>
 
 Link Personalizado:<br>
 <textarea readonly id="resultado" rows="4" cols="50"></textarea><br>
-<button id="copiar-link" onclick="copiarLink()" style="font-size: 16pt"> COPIAR LINK </button>
+<button id="copiar-link" onclick="copiarLink()"> COPIAR LINK </button>
+
+<br><br>
+<button id="website" onclick="window.history.back()">RETORNAR AO SITE ↩️</button>
+<br><br>
+
+
 <script>
 
+function test(){
+alert(document.getElementById("mensagem").value);
+}
+
+function bloquear_texto(estado) {
+    document.getElementById("resultado").readOnly = estado;
+}
+
 function copiarLink() {
-  var copyText = document.getElementById("resultado");
 
-  copyText.select();
-  copyText.setSelectionRange(0, 99999);
+	var input = document.getElementById("resultado");
+	var isiOSDevice = navigator.userAgent.match(/ipad|iphone/i);
 
-  navigator.clipboard.writeText(copyText.innerHTML);
-  
-  alert("Link Copiado !");
+	if (isiOSDevice) {
+	  
+		var editable = input.contentEditable;
+		var readOnly = input.readOnly;
+
+		input.contentEditable = true;
+		input.readOnly = false;
+
+		var range = document.createRange();
+		range.selectNodeContents(input);
+
+		var selection = window.getSelection();
+		selection.removeAllRanges();
+		selection.addRange(range);
+
+		input.setSelectionRange(0, 999999);
+		input.contentEditable = editable;
+		input.readOnly = readOnly;
+
+	} else {
+	 	input.select();
+	}
+    
+    alert("Link Copiado !");
+	document.execCommand('copy');
 }
 
 function gerarLink() {
 var numero = document.getElementById("num").value;
 var link = "https://wa.me/";
 link = link+numero+"?text="+gerarTexto();
+//bloquear_texto(false);
 document.getElementById("resultado").innerHTML = link;
+//bloquear_texto(true);
 }
 
 function gerarTexto() {
-	var mensagem = document.getElementById("mensagem").innerHTML;
+	var mensagem = document.getElementById("mensagem").value;
     var resultado =  encodeURIComponent(mensagem);
 	return resultado;
 }
@@ -100,11 +166,9 @@ input2.addEventListener("keyup", function(event) {
 });
 
 var input = document.getElementById("mensagem");
-input.addEventListener("keyup", function(event) {
-  if (event.keyCode === 13) {
+input.addEventListener("input", function(event) {
    event.preventDefault();
    document.getElementById("converter").click();
-  }
 });
   
 
