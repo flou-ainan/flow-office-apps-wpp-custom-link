@@ -113,11 +113,16 @@ Link Personalizado:<br>
 <button id="copiar-link" onclick="copiarLink()"> COPIAR LINK </button>
 
 <br><br>
-<button id="website" onclick="window.history.go(-1)">RETORNAR AO SITE ↩️</button>
+<button id="website" onclick="voltarAoSite()">RETORNAR AO SITE ↩️</button>
 <br><br>
 
 
 <script>
+function voltarAoSite() {
+    window.history.go(-1);
+    
+    window.location.href = document.referrer
+}
 
 function test(){
 alert(document.getElementById("mensagem").value);
